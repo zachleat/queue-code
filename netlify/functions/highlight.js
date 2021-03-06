@@ -5,6 +5,9 @@ const highlight = syntaxHighlight.pairedShortcode;
 const SyntaxHighlightCharacterWrap = syntaxHighlight.CharacterWrap;
 const URL = require("url").URL;
 
+const MAX_SIZE = 20000;
+const DEFAULT_AUTOPLAY = 99999;
+
 async function gzipContent(inputContent) {
   return await new Promise((resolve, reject) => {
     zlib.gzip(inputContent, (error, output) => {
@@ -31,8 +34,8 @@ exports.handler = async function(event, context) {
 
   try {
     if(!url) {
-      url = "https://gist.githubusercontent.com/zachleat/542f1d15c2061fc3cf4c0bc30c3b9bac/raw/018d11bc263c6708ef11494141e8295aa4b1c7ca/queuecode.js";
-      autoplay = 999999;
+      url = "https://gist.githubusercontent.com/zachleat/542f1d15c2061fc3cf4c0bc30c3b9bac/raw/queuecode.js";
+      autoplay = DEFAULT_AUTOPLAY;
     } else if(!checkValidUrl(url)) {
       throw new Error("Invalid `url` parameter.");
     }
@@ -53,10 +56,10 @@ exports.handler = async function(event, context) {
 
     console.log( "Found", content.length );
     let highlightedCode;
-    if(content.length > 10000 || show) {
+    if(content.length > MAX_SIZE || show) {
       let errorMsg = "";
       if(!show) {
-        let errorMsgContent = "This document was too long for queue-code. Showing a syntax highlighted version only.";
+        let errorMsgContent = `This document was too long for queue-code (was: ${content.length}, maximum: ${MAX_SIZE}). Showing a syntax highlighted version only.`;
         if(format === "js") {
           errorMsg = `// ${errorMsgContent}\n`;
         } else if(format === "html") {
@@ -81,7 +84,7 @@ exports.handler = async function(event, context) {
         <link rel="stylesheet" href="/queue-code.css">
         <script defer async src="/queue-code.js"></script>
       </head>
-      <body${autoplay !== undefined ? ` class="slide-autoplay" data-slide-autoplay-speed="${isNaN(autoplay) ? 99999 : (autoplay || 99999)}"` : ""}>
+      <body${autoplay !== undefined ? ` class="slide-autoplay" data-slide-autoplay-speed="${isNaN(autoplay) ? DEFAULT_AUTOPLAY : (autoplay || DEFAULT_AUTOPLAY)}"` : ""}>
         ${highlightedCode}
       </body>
     </html>`);
