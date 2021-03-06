@@ -1,0 +1,34 @@
+@keyframes blinkingCursor {
+	0% {
+		border-color: #fff;
+	}
+	100% {
+		border-color: transparent;
+	}
+}
+
+.charwrap {
+  display: none;
+}
+.charwrap-typed {
+  display: inline-block;
+}
+.charwrap-typed-initial {
+  opacity: .7;
+}
+.charwrap-cursor {
+  border-right: 2px solid transparent;
+}
+/* TODO add .slide:focus and .slide:focus-within to only show cursor when focused */
+.charwrap-cursor-enabled .charwrap-cursor {
+	border-color: currentColor;
+  animation: blinkingCursor 1s infinite steps(2, start);
+}
+.slide-hidecursor .charwrap-cursor {
+	border-color: transparent !important;
+	animation: none !important;
+}
+/* .charwrap-deleted {
+	color: red;
+	text-decoration: wavy underline red;
+} */
