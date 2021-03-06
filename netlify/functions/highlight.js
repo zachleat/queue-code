@@ -81,7 +81,7 @@ exports.handler = async function(event, context) {
         <link rel="stylesheet" href="/queue-code.css">
         <script defer async src="/queue-code.js"></script>
       </head>
-      <body${autoplay !== undefined ? ` class="slide-autoplay" data-slide-autoplay-speed="${!isNaN(autoplay) ? autoplay : 99999}"` : ""}>
+      <body${autoplay !== undefined ? ` class="slide-autoplay" data-slide-autoplay-speed="${isNaN(autoplay) ? 99999 : (autoplay || 99999)}"` : ""}>
         ${highlightedCode}
       </body>
     </html>`);
