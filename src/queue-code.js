@@ -350,7 +350,7 @@ class Typer {
 }
 
 ;(function() {
-	let slideEl = document.querySelector("pre");
+	let slideEl = document.querySelector("body");
 	if(!slideEl) {
 		return;
 	}

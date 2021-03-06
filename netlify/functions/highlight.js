@@ -27,11 +27,14 @@ function checkValidUrl(url) {
 }
 
 exports.handler = async function(event, context) {
-  let { url, format, show } = event.queryStringParameters;
+  let { url, format, show, autoplay } = event.queryStringParameters;
 
   try {
-    if(!url || !checkValidUrl(url)) {
-      throw new Error("Missing or invalid `url` parameter.");
+    if(!url) {
+      url = "https://gist.githubusercontent.com/zachleat/542f1d15c2061fc3cf4c0bc30c3b9bac/raw/018d11bc263c6708ef11494141e8295aa4b1c7ca/queuecode.js";
+      autoplay = 999999;
+    } else if(!checkValidUrl(url)) {
+      throw new Error("Invalid `url` parameter.");
     }
 
     // Guess the format based on a file extension in the URL
@@ -78,7 +81,7 @@ exports.handler = async function(event, context) {
         <link rel="stylesheet" href="/queue-code.css">
         <script defer async src="/queue-code.js"></script>
       </head>
-      <body>
+      <body${autoplay !== undefined ? ` class="slide-autoplay" data-slide-autoplay-speed="${!isNaN(autoplay) ? autoplay : 99999}"` : ""}>
         ${highlightedCode}
       </body>
     </html>`);
