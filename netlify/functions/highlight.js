@@ -3,6 +3,7 @@ const zlib = require("zlib");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const highlight = syntaxHighlight.pairedShortcode;
 const SyntaxHighlightCharacterWrap = syntaxHighlight.CharacterWrap;
+const URL = require("url").URL;
 
 async function gzipContent(inputContent) {
   return await new Promise((resolve, reject) => {
@@ -16,10 +17,23 @@ async function gzipContent(inputContent) {
   });
 }
 
+function checkValidUrl(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 exports.handler = async function(event, context) {
   let { url, format, show } = event.queryStringParameters;
 
   try {
+    if(!url || !checkValidUrl(url)) {
+      throw new Error("Missing or invalid `url` parameter.");
+    }
+
     // Guess the format based on a file extension in the URL
     let extension = url.split(".").pop();
     if(extension === "js" || extension === "html" || extension === "css") {
@@ -27,7 +41,7 @@ exports.handler = async function(event, context) {
     }
 
     if(!format) {
-      throw new Error("Missing `format` param.");
+      throw new Error("Missing `format` param for syntax highlighter code format.");
     }
 
     // TODO check valid URL
