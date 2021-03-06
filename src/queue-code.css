@@ -7,8 +7,10 @@
 	}
 }
 
-.charwrap {
-  display: none;
+@media(any-pointer: fine) {
+  .charwrap {
+    display: none;
+  }
 }
 .charwrap-typed {
   display: inline-block;
