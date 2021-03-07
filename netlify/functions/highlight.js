@@ -31,7 +31,7 @@ function checkValidUrl(url) {
 }
 
 exports.handler = async function(event, context) {
-  let { url, format, show, autoplay } = event.queryStringParameters;
+  let { url, format, highlightonly, autoplay } = event.queryStringParameters;
 
   try {
     if(!url) {
@@ -59,9 +59,9 @@ exports.handler = async function(event, context) {
 
     console.log( "Found", content.length );
     let highlightedCode;
-    if(content.length > MAX_SIZE || show) {
+    if(content.length > MAX_SIZE || highlightonly !== undefined) {
       let errorMsg = "";
-      if(!show) {
+      if(highlightonly === undefined) {
         let errorMsgContent = `This document was too long for queue-code (was: ${content.length}, maximum: ${MAX_SIZE}). Showing a syntax highlighted version only.`;
         if(format === "js") {
           errorMsg = `// ${errorMsgContent}\n`;
