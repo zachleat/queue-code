@@ -6,6 +6,7 @@ const SyntaxHighlightCharacterWrap = syntaxHighlight.CharacterWrap;
 const URL = require("url").URL;
 
 const MAX_SIZE = 20000;
+const DEFAULT_URL = "https://gist.githubusercontent.com/zachleat/542f1d15c2061fc3cf4c0bc30c3b9bac/raw/queuecode.js";
 const DEFAULT_AUTOPLAY = 99999;
 
 async function gzipContent(inputContent) {
@@ -34,8 +35,10 @@ exports.handler = async function(event, context) {
 
   try {
     if(!url) {
-      url = "https://gist.githubusercontent.com/zachleat/542f1d15c2061fc3cf4c0bc30c3b9bac/raw/queuecode.js";
-      autoplay = DEFAULT_AUTOPLAY;
+      url = DEFAULT_URL;
+      if(autoplay === undefined) {
+        autoplay = DEFAULT_AUTOPLAY;
+      }
     } else if(!checkValidUrl(url)) {
       throw new Error("Invalid `url` parameter.");
     }
