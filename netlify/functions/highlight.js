@@ -80,8 +80,8 @@ exports.handler = async function(event, context) {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <title></title>
+        <meta name="description" content="Allows you to “type” syntax highlighted source code for presentations and screencasts.">
+        <title>Queue Code for ${url}</title>
         <link rel="stylesheet" href="/style.css">
         <link rel="stylesheet" href="/prism-theme.css">
         <link rel="stylesheet" href="/queue-code.css">
