@@ -19,14 +19,19 @@
   opacity: .7;
 }
 .charwrap-cursor {
-  border-right: 2px solid transparent;
+	border-right: 2px solid transparent;
+}
+.charwrap-cursor-empty {
+	border-left: 2px solid transparent;
 }
 /* TODO add .slide:focus and .slide:focus-within to only show cursor when focused */
-.charwrap-cursor-enabled .charwrap-cursor {
+.charwrap-cursor-enabled .charwrap-cursor,
+.charwrap-cursor-enabled .charwrap-cursor-empty { 
 	border-color: currentColor;
   animation: blinkingCursor 1s infinite steps(2, start);
 }
-.slide-hidecursor .charwrap-cursor {
+.slide-hidecursor .charwrap-cursor,
+.slide-hidecursor .charwrap-cursor-empty {
 	border-color: transparent !important;
 	animation: none !important;
 }

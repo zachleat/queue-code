@@ -9,6 +9,7 @@ class Typer {
 		this.classes = {
 			letter: "charwrap",
 			cursor: "charwrap-cursor",
+			cursorEmpty: "charwrap-cursor-empty",
 			cursorInitial: "charwrap-cursor-initial",
 			cursorEnabled: "charwrap-cursor-enabled",
 			typed: "charwrap-typed",
@@ -27,8 +28,12 @@ class Typer {
 	initializeCursors() {
 		if(!this.hasCursor()) {
 			let initialCursors = Array.from(document.querySelectorAll(`.${this.classes.cursorInitial}`));
-			for(let cursor of initialCursors) {
-				this.addCursor(cursor);
+			if(initialCursors.length) {
+				for(let cursor of initialCursors) {
+					this.addCursor(cursor);
+				}
+			} else {
+				this.setupInitialCursor(true);
 			}
 		}
 	}
@@ -100,10 +105,22 @@ class Typer {
 		return !!document.querySelector(`.${this.classes.cursor}`);
 	}
 
+	setupInitialCursor(add = true) {
+		if(!this._firstCodeElement) {
+			this._firstCodeElement = document.querySelector(`pre > code`);
+		}
+
+		if(this._firstCodeElement) {
+			this._firstCodeElement.classList[add ? "add" : "remove"](this.classes.cursorEmpty);
+		}
+	}
+
 	removeCursors(elArr) {
 		for(let el of elArr) {
 			el.classList.remove(this.classes.cursor);
 		}
+
+		this.setupInitialCursor(false);
 	}
 
 	addCursor(el) {
