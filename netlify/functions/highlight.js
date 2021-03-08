@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const fetch = require("@11ty/eleventy-cache-assets");
 const zlib = require("zlib");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const highlight = syntaxHighlight.pairedShortcode;
@@ -52,16 +52,23 @@ exports.handler = async function(event, context) {
     if(!format) {
       throw new Error("Missing `format` param for syntax highlighter code format.");
     }
+    
+    let useHighlightOnly = highlightonly !== undefined;
 
     // TODO check valid URL
-    let htmlRequest = await fetch(url);
-    let content = await htmlRequest.text();
+    let content = await fetch(url, {
+      directory: "/tmp/.cache/",
+      type: "text",
+    });
+    
+    content = content.toString()
 
     console.log( "Found", content.length );
+    console.log( "Highlight only?", );
     let highlightedCode;
-    if(content.length > MAX_SIZE || highlightonly !== undefined) {
+    if(content.length > MAX_SIZE || useHighlightOnly) {
       let errorMsg = "";
-      if(highlightonly === undefined) {
+      if(!useHighlightOnly) {
         let errorMsgContent = `This document was too long for queue-code (was: ${content.length}, maximum: ${MAX_SIZE}). Showing a syntax highlighted version only.`;
         if(format === "js") {
           errorMsg = `// ${errorMsgContent}\n`;
@@ -102,6 +109,7 @@ exports.handler = async function(event, context) {
       isBase64Encoded: true,
     }
   } catch(e) {
+    console.log( e );
     return {
       statusCode: 500,
       body: JSON.stringify({

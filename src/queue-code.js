@@ -106,12 +106,14 @@ class Typer {
 	}
 
 	setupInitialCursor(add = true) {
-		if(!this._firstCodeElement) {
-			this._firstCodeElement = document.querySelector(`pre > code`);
-		}
-
-		if(this._firstCodeElement) {
-			this._firstCodeElement.classList[add ? "add" : "remove"](this.classes.cursorEmpty);
+		if(this.hasNext()) {
+			if(!this._firstCodeElement) {
+				this._firstCodeElement = document.querySelector(`pre > code`);
+			}
+	
+			if(this._firstCodeElement) {
+				this._firstCodeElement.classList[add ? "add" : "remove"](this.classes.cursorEmpty);
+			}
 		}
 	}
 
