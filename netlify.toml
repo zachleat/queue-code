@@ -1,2 +1,2 @@
 [build]
-  publish = "src/"
+  publish = "_site/"
