@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npx netlify dev"
+    "start": "npx netlify dev",
+    "build": "npx @11ty/eleventy"
   },
   "funding": {
     "type": "opencollective",
